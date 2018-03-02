@@ -4,6 +4,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require("webpack");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
+
+function resolve (dir) {
+	return path.join(__dirname, '..', dir)
+}
+
 module.exports = {
   	entry:{
 		  script :  './src/scripts/index.js',
@@ -11,11 +16,19 @@ module.exports = {
   	devtool : "eval",
 	output: {
 		filename: 'scripts/[name].bundle.js',
-		path: path.resolve(__dirname, 'dist')
+		path: path.resolve(__dirname, 'dist'),
+		publicPath:"/"
 	},
+	resolve: {
+		extensions: ['.js', '.pug', '.json'],
+		alias: {
+		  '@': resolve('src'),
+		}
+	  },
 	module: {
 	    loaders: [
 			{ test: /\.scss$/, loader: ExtractTextPlugin.extract({
+					publicPath:"/",
 					fallback: 'style-loader',
 					use: ['css-loader', 'sass-loader']
 				})
@@ -31,12 +44,17 @@ module.exports = {
 			{ 
 				test: /\.pug$/,
 				exclude: /node_modules/,
-				use:["html-loader",{
-					loader:"pug-html-loader",
-					options:{
-						pretty:true,
+				use:["html-loader",
+					{
+						loader:"pug-html-loader",
+						options:{
+							pretty:true,
+							data:{
+								"baseUrl": resolve('src')
+							}
+						}
 					}
-				}],
+				],
 			},
 			{ 
 				test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -44,7 +62,7 @@ module.exports = {
 				options:{
 					limit: 10000,
 					name: "[name].[hash].[ext]",
-					outputPath: 'assets/images'
+					outputPath: 'assets/images',
 				}
 			},
 			{
@@ -71,6 +89,7 @@ module.exports = {
 		new CopyWebpackPlugin([
 			{ from: './src/scripts/vendor', to: './scripts/vendor' },
 			{ from: './src/styles/vendor', to:'./styles/vendor'},
+			{ from: './src/lib', to:'./lib'},
 		]),
 		new webpack.ProvidePlugin({
             $: "jquery",
