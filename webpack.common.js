@@ -6,7 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 
 function resolve (dir) {
-	return path.join(__dirname, '..', dir)
+	return path.join(__dirname, '.', dir)
 }
 
 module.exports = {
@@ -23,6 +23,7 @@ module.exports = {
 		extensions: ['.js', '.pug', '.json'],
 		alias: {
 		  '@': resolve('src'),
+		  'assets': resolve('src/assets')
 		}
 	  },
 	module: {
@@ -60,25 +61,22 @@ module.exports = {
 				test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
 				loader:'file-loader',
 				options:{
-					limit: 10000,
 					name: "[name].[hash].[ext]",
 					outputPath: 'assets/images',
 				}
 			},
 			{
 				test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-				loader: 'url-loader',
+				loader:'file-loader',
 				options:{
-					limit: 10000,
 					name: "[name].[hash].[ext]",
 					outputPath: 'assets/media'
 				}
 			  },
 			  {
 				test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-				loader: 'url-loader',
+				loader:'file-loader',
 				options:{
-					limit: 10000,
 					name: "[name].[hash].[ext]",
 					outputPath: 'assets/fonts'
 				}
@@ -107,7 +105,7 @@ module.exports = {
 		}),
 		new HtmlWebpackPlugin({
 			hash: true,
-			template: './src/template/home.pug',
+			template: './src/template/pages/home.pug',
 			filename:  'home.html'
 		})
     ]
