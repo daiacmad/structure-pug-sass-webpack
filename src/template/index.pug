@@ -1,31 +1,55 @@
-doctype html
+<!DOCTYPE html>
 html(lang="en")
-  head
-    title= pageTitle
-    base(href="/")
+    head
+        base(src="/")
+        title asasd
+        meta(charset="UTF-8")
+        meta(content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport')
+        //- bootstrap
+        link(rel="stylesheet" type="text/css"  href="./lib/bootstrap/css/bootstrap.min.css")
+        //- font-awesome
+        link(rel="stylesheet" type="text/css" href="./lib/font-awesome/css/font-awesome.min.css")
+        //- lte
+        link(rel="stylesheet" type="text/css" href="./lib/Adminlte/AdminLTE.css")
+        link(rel="stylesheet" type="text/css" href="./lib/Adminlte/skins/_all-skins.css")
+        
+body.skin-blue.sidebar-mini
+    div.wrapper
+        header.main-header
+            a.logo(href="#")
+                span.logo-mini
+                    img(src="")
+                span.logo-lg.pull-left
+                    img(src="")
+            nav.navbar.navbar-static-top(role="navigation")
+                //- <!-- Sidebar toggle button-->
+                a(href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button" style="margin: 0;")
+                    span.sr-only Toggle navigation
+                    span.icon-bar
+                    span.icon-bar
+                    span.icon-bar
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    //- bootstrap
-    link(rel="stylesheet" href="./lib/bootstrap/css/bootstrap.min.css")
-    //- font-awesome
-    link(rel="stylesheet" href="./lib/font-awesome/css/font-awesome.min.css")
-    //- adminlte
-    link(rel="stylesheet" href="./lib/adminLte/css/AdminLTE.min.css")
-    link(rel="stylesheet" href="./lib/adminLte/css/skins/_all-skins.min.css")
+                div.navbar-custom-menu
+                    ul.nav.navbar-nav
+                        li
+                            a(href="#" target="_blank")
+                                i.fa.fa-eye View Website
+        //-     <!-- Left side column. contains the logo and sidebar -->
+        aside.main-sidebar.sidebar-offcanvas
 
-  //- body
-  body.hold-transition.skin-blue.sidebar-mini.login-page
-    include ./components/_header.pug
-    include ./components/_sidebar.pug
-
-    div.content-wrapper
-      block content
-
-    include ./components/_footer.pug
+            //- <!-- sidebar: style can be found in sidebar.less -->
+            section.sidebar
+                ul.sidebar-menu
+                    li.active.clearfix
+                        a(href="#")
+                            i.fa.fa-dashboard
+                            span Dashboard
+            
+        div.content-wrapper
+            block content
     
-//- jquery
-script(src="./lib/jquery/jquery.min.js")
-//- bootstrap
-script(src="./lib/bootstrap/js/bootstrap.min.js")
-//- adminlte
-script(src="./lib/adminLte/js/adminlte.min.js")
+    script(src="./lib/jquery/jquery.min.js")
+    script(src="./lib/bootstrap/js/bootstrap.min.js")
+    script(src="./lib/Adminlte/app.js")
+    script(src="./lib/ckeditor/ckeditor.js")
+    block script

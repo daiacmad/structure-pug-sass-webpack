@@ -9,21 +9,23 @@ function resolve (dir) {
 	return path.join(__dirname, '.', dir)
 }
 
+console.log(process.env.NODE_ENV )
 module.exports = {
   	entry:{
-		  script :  './src/scripts/index.js',
+		script :  './src/scripts/index.js',
   	},
   	devtool : "eval",
 	output: {
 		filename: 'scripts/[name].bundle.js',
 		path: path.resolve(__dirname, 'dist'),
-		publicPath:"/"
+		publicPath: "./"
 	},
 	resolve: {
 		extensions: ['.js', '.pug', '.json'],
 		alias: {
-		  '@': resolve('src'),
-		  'assets': resolve('src/assets')
+		  	'src': resolve('src'),
+			'assets': resolve('src/assets'),
+			'lib': resolve('src/lib')
 		}
 	  },
 	module: {
@@ -62,51 +64,48 @@ module.exports = {
 				loader:'file-loader',
 				options:{
 					name: "[name].[hash].[ext]",
-					outputPath: 'assets/images',
+					outputPath: './assets/images',
 				}
 			},
 			{
 				test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-				loader:'file-loader',
+				loader: 'file-loader',
 				options:{
 					name: "[name].[hash].[ext]",
-					outputPath: 'assets/media'
+					outputPath: './assets/media'
 				}
 			  },
 			  {
 				test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-				loader:'file-loader',
+				loader: 'file-loader',
 				options:{
 					name: "[name].[hash].[ext]",
-					outputPath: 'assets/fonts'
+					outputPath: './assets/fonts',
+					publicPath:"../assets/fonts"
 				}
 			  }
 		]
 	},
 	plugins: [
 		new CopyWebpackPlugin([
-			{ from: './src/scripts/vendor', to: './scripts/vendor' },
-			{ from: './src/styles/vendor', to:'./styles/vendor'},
 			{ from: './src/lib', to:'./lib'},
 		]),
-		new webpack.ProvidePlugin({
-            $: "jquery",
-			jQuery: "jquery",
-			_ : "underscore"
-        }),
+		// new webpack.ProvidePlugin({
+        //     $: "jquery",
+		// 	jQuery: "jquery"
+        // }),
 		new ExtractTextPlugin({
 			filename: "styles/style.bundle.css"
 		}), 
+		// new HtmlWebpackPlugin({
+		// 	hash: false,
+		// 	template: './src/template/index.pug',
+		// 	filename:  'index.html',
+		// }),
 		new HtmlWebpackPlugin({
 			hash: false,
 			template: './src/template/index.pug',
-			filename:  'index.html',
-			minify:false,
+			filename: 'index.html',
 		}),
-		new HtmlWebpackPlugin({
-			hash: true,
-			template: './src/template/pages/home.pug',
-			filename:  'home.html'
-		})
     ]
 };
