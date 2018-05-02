@@ -13,7 +13,7 @@ html(lang="en")
         link(rel="stylesheet" type="text/css" href="./lib/Adminlte/AdminLTE.css")
         link(rel="stylesheet" type="text/css" href="./lib/Adminlte/skins/_all-skins.css")
         
-body.skin-blue.sidebar-mini
+body.skin-blue.sidebar-mini(ng-app="myApp")
     div.wrapper
         header.main-header
             a.logo(href="#")
@@ -46,6 +46,7 @@ body.skin-blue.sidebar-mini
                             span Dashboard
             
         div.content-wrapper
+            div(ng-view)
             block content
     
     script(src="./lib/jquery/jquery.min.js")

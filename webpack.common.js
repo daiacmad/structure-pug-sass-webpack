@@ -3,16 +3,38 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require("webpack");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const glob = require("glob");
+const fs = require("fs");
 
 
 function resolve (dir) {
 	return path.join(__dirname, '.', dir)
 }
 
-console.log(process.env.NODE_ENV )
+
+// Our function that generates our html plugins
+function generateHtmlPlugins (templateDir) {
+	// Read files in template directory
+	const templateFiles = fs.readdirSync(path.resolve(__dirname, templateDir))
+	return templateFiles.map(item => {
+	  // Split names and extension
+	  const parts = item.split('.')
+	  const name = parts[0]
+	  const extension = parts[1]
+	  // Create new HTMLWebpackPlugin with options
+	  return new HtmlWebpackPlugin({
+		filename: `${name}.html`,
+		template: path.resolve(__dirname, `${templateDir}/${name}.${extension}`)
+	  })
+	})
+}
+const htmlPlugins = generateHtmlPlugins('./src/template/pages');
+
+
 module.exports = {
   	entry:{
-		script :  './src/scripts/index.js',
+		// script :  './src/scripts/index.js',
+		bundle : glob.sync("./src/scripts/*.js"),
   	},
   	devtool : "eval",
 	output: {
@@ -97,15 +119,6 @@ module.exports = {
 		new ExtractTextPlugin({
 			filename: "styles/style.bundle.css"
 		}), 
-		// new HtmlWebpackPlugin({
-		// 	hash: false,
-		// 	template: './src/template/index.pug',
-		// 	filename:  'index.html',
-		// }),
-		new HtmlWebpackPlugin({
-			hash: false,
-			template: './src/template/index.pug',
-			filename: 'index.html',
-		}),
     ]
+	.concat(htmlPlugins)
 };
