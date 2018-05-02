@@ -11,7 +11,7 @@ function resolve (dir) {
 	return path.join(__dirname, '.', dir)
 }
 
-
+// --------------------------------------------------template
 // Our function that generates our html plugins
 function generateHtmlPlugins (templateDir) {
 	// Read files in template directory
@@ -30,12 +30,27 @@ function generateHtmlPlugins (templateDir) {
 }
 const htmlPlugins = generateHtmlPlugins('./src/template/pages');
 
+// -------------------------------------------------- javascript
+function generateJavascript(templateDir){
+	var newItem = {};
+	// Read files in template directory
+	const templateFiles = fs.readdirSync(path.resolve(__dirname,templateDir))
+	templateFiles.forEach(item => {
+		// Split names and extension
+		const parts = item.split('.')
+		const name = parts[0]
+		const extension = parts[1]
 
+		newItem[name] = `${templateDir}/${name}.${extension}`;
+	});
+	return newItem;
+}
+const javascriptEntry = generateJavascript("./src/scripts");
+
+
+// --------------------------------------------- run command
 module.exports = {
-  	entry:{
-		// script :  './src/scripts/index.js',
-		bundle : glob.sync("./src/scripts/*.js"),
-  	},
+  	entry:javascriptEntry ,
   	devtool : "eval",
 	output: {
 		filename: 'scripts/[name].bundle.js',
@@ -117,7 +132,7 @@ module.exports = {
 		// 	jQuery: "jquery"
         // }),
 		new ExtractTextPlugin({
-			filename: "styles/style.bundle.css"
+			filename: "styles/[name].bundle.css"
 		}), 
     ]
 	.concat(htmlPlugins)
