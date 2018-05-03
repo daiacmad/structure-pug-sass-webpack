@@ -133,7 +133,7 @@ module.exports = {
         // }),
 		new ExtractTextPlugin({
 			filename: "styles/[name].bundle.css"
-		}), 
+		}),  
     ]
 	.concat(htmlPlugins)
 };
